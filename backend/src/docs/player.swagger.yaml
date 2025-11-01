@@ -1,0 +1,166 @@
+tags:
+  - name: Player
+    description: Endpoints de CRUD de jugadores
+
+paths:
+  /players/all:
+    get:
+      summary: Obtener todos los jugadores
+      description: Obtiene la información de todos los jugadores disponibles en el juego
+      tags: [Player]
+      responses:
+        200:
+          description: Datos de todos los jugadores disponibles recuperados exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  team:
+                    type: string
+                  position:
+                    type: string
+                  nacionality:
+                    type: string
+                required:
+                  - name
+                  - team
+                  - position
+                  - nacionality
+        401:
+          description: No autorizado - Token inválido o expirado
+        403:
+          description: Prohibido - No tienes permiso para ver esta acción
+
+  /players/myPlayers:
+    get:
+      summary: Obtener todos los jugadores del usuario autenticado
+      description: Obtiene la información de todos los jugadores del usuario autenticado
+      tags: [Player]
+      security:
+        - bearerAuth: []
+      responses:
+        200:
+          description: Datos de todos los jugadores del usuario recuperados exitosamente
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  name:
+                    type: string
+                  team:
+                    type: string
+                  position:
+                    type: string
+                  nacionality:
+                    type: string
+                required:
+                  - name
+                  - team
+                  - position
+                  - nacionality
+        401:
+          description: No autorizado - Token inválido o expirado
+        403:
+          description: Prohibido - No tienes permiso para ver esta acción
+
+  /players/add:
+    post:
+      summary: Agregar un nuevo jugador
+      tags: [Player]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                team:
+                  type: string
+                position:
+                  type: string
+                nacionality:
+                  type: string
+              required:
+                - name
+                - team
+                - position
+                - nacionality
+      responses:
+        201:
+          description: Jugador agregado  exitosamente
+        400:
+          description: Datos inválidos
+
+  /players/update/{pid}:
+    put:
+      summary: Actualiza un jugador
+      tags: [Player]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del jugador a actualizar
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+                  description: Nombre del jugador
+                team:
+                  type: string
+                  description: Equipo del jugador
+                position:
+                  type: string
+                  description: Posición del jugador
+                nacionality:
+                  type: string
+                  description: Nacionalidad del jugador
+              required:
+                - name
+                - team
+                - position
+                - nacionality
+      responses:
+        200:
+          description: Jugador actualizado exitosamente
+        400:
+          description: Datos inválidos
+        404:
+          description: Jugador no encontrado
+
+  /players/delete/{pid}:
+    delete:
+      summary: Elimina un jugador
+      tags: [Player]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: pid
+          required: true
+          schema:
+            type: string
+          description: ID del jugador a eliminar
+      responses:
+        200:
+          description: Jugador eliminado exitosamente
+        400:
+          description: Datos inválidos
+        404:
+          description: Jugador no encontrado
